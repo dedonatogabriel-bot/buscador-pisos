@@ -1,15 +1,15 @@
 # Configuración de búsqueda. Valores de docs/SPEC.md §2, §11 y §12.
-# Lo marcado "PENDIENTE G-02" espera la confirmación de Marcos (docs/DECISIONES.md).
+# G-02 confirmado por Marcos el 2026-11-06 (vía Gabi). Cualquier "PENDIENTE" que quede espera confirmación.
 # No inventes valores acá: si falta uno, dejá la lista vacía o el campo en null.
 
 hard_filters:
   contract_type: traditional        # alquiler tradicional, no temporario
   furnished: false
   min_bedrooms: 1
-  min_area_m2: 50                   # PENDIENTE G-02: ¿acepta 45-49 m² si el total cierra?
+  min_area_m2: 45                   # G-02: no menos de 45 m² (el SPEC decía 50)
   require_balcony: true
   require_heating: true
-  accepted_heating_types: []        # PENDIENTE G-02: ¿split frío/calor cuenta?
+  accepted_heating_types: [any]     # G-02: toda calefacción vale (split, gas, central...)
   min_floor: 5
   require_elevator: true
   require_inside_isochrone: true    # isocrona de 40 min a Callao y Corrientes (C-22)
@@ -19,18 +19,60 @@ hard_filters:
 budget:
   currency: ARS
   max_rent: 700000
-  max_expenses: 200000              # PENDIENTE G-02: ¿acepta más si el total cierra?
+  max_expenses: null                # G-02: sin tope propio, solo cuenta max_total (referencia: 200000)
   max_total: 900000                 # alquiler + expensas por mes
   total_tolerance_pct: 10           # costo total <= tope indexado + 10%
 
 indexation:
-  enabled: null                     # PENDIENTE G-02: ¿tope fijo o indexado con su sueldo?
+  enabled: true                     # G-02: el tope de 900000 se indexa por IPC
   index: IPC
   frequency: monthly
 
 neighborhoods:
-  accepted: []                      # PENDIENTE G-02
-  vetoed: []                        # PENDIENTE G-02
+  # G-02. Ojo: Barracas, La Boca y Parque Patricios (parte) caen al sur de Av. Juan de Garay.
+  # Confirmar con Marcos si pesa más la zona o la lista (el filtro de zona de C-04 los dejaría afuera).
+  accepted:
+    - Agronomía
+    - Almagro
+    - Balvanera
+    - Barracas
+    - Belgrano
+    - Boedo
+    - Caballito
+    - Chacarita
+    - Coghlan
+    - Colegiales
+    - Constitución
+    - La Boca
+    - La Paternal
+    - Liniers
+    - Monte Castro
+    - Monserrat
+    - Núñez
+    - Palermo
+    - Parque Chacabuco
+    - Parque Chas
+    - Parque Patricios
+    - Puerto Madero
+    - Recoleta
+    - Retiro
+    - Saavedra
+    - San Cristóbal
+    - San Nicolás
+    - San Telmo
+    - Vélez Sársfield
+    - Versalles
+    - Villa Crespo
+    - Villa del Parque
+    - Villa Devoto
+    - Villa General Mitre
+    - Villa Luro
+    - Villa Ortúzar
+    - Villa Pueyrredón
+    - Villa Real
+    - Villa Santa Rita
+    - Villa Urquiza
+  vetoed: []                        # G-02: sin barrios vetados
 
 geography:
   zone: norte de Av. Juan de Garay

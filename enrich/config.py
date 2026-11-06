@@ -48,7 +48,7 @@ class HardFilters(_Strict):
 class Budget(_Strict):
     currency: Literal["ARS", "USD"]
     max_rent: int = Field(gt=0)
-    max_expenses: int = Field(ge=0)
+    max_expenses: int | None = Field(default=None, ge=0)  # None = sin tope propio
     max_total: int = Field(gt=0)
     total_tolerance_pct: int = Field(ge=0, le=100)
 

@@ -12,15 +12,15 @@
 | 2026-11-06 | Primera alerta por reglas, IA confirma después | Velocidad sin costo de API |
 | 2026-11-06 | Telegram como canal | Gratis, botones, fotos |
 | 2026-11-06 | Construcción con Claude Code en local, no en Actions | Ahorra minutos de GitHub |
+| 2026-11-06 | Tope de $900.000 indexado por IPC mensual | Marcos (G-02) |
+| 2026-11-06 | Mínimo 45 m² (el SPEC decía 50) y expensas sin tope propio si el total cierra | Marcos (G-02) |
+| 2026-11-06 | 40 barrios aceptados, ninguno vetado; cualquier calefacción vale | Marcos (G-02) |
+| 2026-11-06 | La PC de Windows es personal; disponible 08:00-23:00 y 02:00-08:00 Madrid, con cortes de ~20 min | Gabi (G-03) |
+| 2026-11-06 | Sin clave de API de pago: la visión corre solo con `claude -p` | Gabi (G-10) |
+
 
 ## Pendientes (bloquean tareas)
 
 | Pregunta | Quién | Issue |
 | --- | --- | --- |
 | Texto exacto de la cláusula de rescisión y fecha de firma | Marcos | G-01 |
-| ¿Tope fijo o indexado con su sueldo? | Marcos | G-02 |
-| ¿Acepta 45–49 m² o expensas > $200.000 si el total cierra? | Marcos | G-02 |
-| Barrios aceptados y vetados | Marcos | G-02 |
-| Tipos de calefacción aceptados (¿split frío/calor cuenta?) | Marcos | G-02 |
-| ¿La PC de Windows es personal y puede quedar prendida? | Gabi | G-03 |
-| ¿Clave de API opcional con tope US$5/mes para visión? | Gabi | G-10 |

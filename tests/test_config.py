@@ -23,9 +23,15 @@ def test_default_config_loads() -> None:
     cfg = load_config()
     assert cfg.budget.max_total == 900_000
     assert cfg.budget.currency == "ARS"
-    assert cfg.hard_filters.min_area_m2 == 50
+    assert cfg.hard_filters.min_area_m2 == 45
     assert sum(cfg.score_weights.model_dump().values()) == 100
-    assert cfg.indexation.enabled is None
+    assert cfg.indexation.enabled is True
+    assert cfg.indexation.index == "IPC"
+    assert cfg.budget.max_expenses is None
+    assert cfg.hard_filters.accepted_heating_types == ["any"]
+    assert len(cfg.neighborhoods.accepted) == 40
+    assert {"Almagro", "Constitución", "La Boca"} <= set(cfg.neighborhoods.accepted)
+    assert cfg.neighborhoods.vetoed == []
 
 
 def test_rows_for_config_table() -> None:
