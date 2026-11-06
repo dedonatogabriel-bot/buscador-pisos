@@ -1,0 +1,101 @@
+# Configuración de búsqueda. Valores de docs/SPEC.md §2, §11 y §12.
+# G-02 confirmado por Marcos el 2026-11-06 (vía Gabi). Cualquier "PENDIENTE" que quede espera confirmación.
+# No inventes valores acá: si falta uno, dejá la lista vacía o el campo en null.
+
+hard_filters:
+  contract_type: traditional        # alquiler tradicional, no temporario
+  furnished: false
+  min_bedrooms: 1
+  min_area_m2: 45                   # G-02: no menos de 45 m² (el SPEC decía 50)
+  require_balcony: true
+  require_heating: true
+  accepted_heating_types: [any]     # G-02: toda calefacción vale (split, gas, central...)
+  min_floor: 5
+  require_elevator: true
+  require_inside_isochrone: true    # isocrona de 40 min a Callao y Corrientes (C-22)
+  advertiser: [owner, agency]
+  guarantee: propietaria_caba
+
+budget:
+  currency: ARS
+  max_rent: 700000
+  max_expenses: null                # G-02: sin tope propio, solo cuenta max_total (referencia: 200000)
+  max_total: 900000                 # alquiler + expensas por mes
+  total_tolerance_pct: 10           # costo total <= tope indexado + 10%
+
+indexation:
+  enabled: true                     # G-02: el tope de 900000 se indexa por IPC
+  index: IPC
+  frequency: monthly
+
+neighborhoods:
+  # G-02. Ojo: Barracas y Parque Patricios (parte) caen al sur de Av. Juan de Garay.
+  # Confirmar con Marcos si pesa más la zona o la lista (el filtro de zona de C-04 los dejaría afuera).
+  accepted:
+    - Agronomía
+    - Almagro
+    - Balvanera
+    - Barracas
+    - Belgrano
+    - Boedo
+    - Caballito
+    - Chacarita
+    - Coghlan
+    - Colegiales
+    - La Paternal
+    - Liniers
+    - Monte Castro
+    - Monserrat
+    - Núñez
+    - Palermo
+    - Parque Chacabuco
+    - Parque Chas
+    - Parque Patricios
+    - Puerto Madero
+    - Recoleta
+    - Retiro
+    - Saavedra
+    - San Cristóbal
+    - San Nicolás
+    - San Telmo
+    - Vélez Sársfield
+    - Versalles
+    - Villa Crespo
+    - Villa del Parque
+    - Villa Devoto
+    - Villa General Mitre
+    - Villa Luro
+    - Villa Ortúzar
+    - Villa Pueyrredón
+    - Villa Real
+    - Villa Santa Rita
+    - Villa Urquiza
+  vetoed: []                        # G-02: sin barrios vetados
+
+geography:
+  zone: norte de Av. Juan de Garay
+  work_point:
+    name: Callao y Corrientes
+  max_commute_minutes: 40
+  preferred_subway_lines: [B, D, A]
+
+# Score = 35·P + 20·T + 15·E + 15·C + 10·U + 5·N (0-100). Deben sumar 100.
+score_weights:
+  price: 35
+  transport: 20
+  space: 15
+  comfort: 15
+  urgency: 10
+  environment: 5
+
+alerts:
+  timezone: America/Argentina/Buenos_Aires
+  red_window: {start: "08:00", end: "23:00"}
+  red_min_score: 80
+  yellow_min_score: 60
+  yellow_max_score: 79
+  yellow_digest_times: ["09:00", "19:00"]
+  weekly_market_report: {weekday: monday, time: "09:00"}
+  new_owner_listing_max_hours: 24
+
+target_move_in: 2027-05-01

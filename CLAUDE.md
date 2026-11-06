@@ -10,6 +10,11 @@ Especificación completa: `docs/SPEC.md`. Decisiones tomadas y pendientes: `docs
 - **Marcos**: el que se muda. Recibe alertas y hace las visitas. Vive en Buenos Aires.
 - Fecha objetivo: contrato nuevo con entrada el 1 de mayo de 2027.
 
+## Rutas locales (PC de Windows de Gabi)
+
+- Este repo: `C:\Users\info\Downloads\claude_code\marcos-se-muda`. El runner y las tareas programadas de Windows la usan.
+- Scraper viejo (`cacho-se-muda`): `C:\Users\info\Downloads\claude_code\cacho-se-muda`.
+
 ## Cómo se trabaja en este repo
 
 - Las tareas son issues de GitHub. Tomalas con la skill `/siguiente-tarea`.
