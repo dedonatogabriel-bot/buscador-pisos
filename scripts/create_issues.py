@@ -68,12 +68,12 @@ def validate(data: dict) -> None:
 
     def visit(node: str, path: list[str]) -> None:
         if state.get(node) == 1:
-            sys.exit(f"Ciclo de dependencias: {' -> '.join(path + [node])}")
+            sys.exit(f"Ciclo de dependencias: {' -> '.join([*path, node])}")
         if state.get(node) == 2:
             return
         state[node] = 1
         for dep in graph[node]:
-            visit(dep, path + [node])
+            visit(dep, [*path, node])
         state[node] = 2
 
     for node in graph:

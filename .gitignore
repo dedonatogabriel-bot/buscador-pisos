@@ -1,0 +1,27 @@
+# Secretos
+.env
+.env.*
+!.env.example
+*.pem
+*service-account*.json
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+.ruff_cache/
+
+# Supabase local
+supabase/.branches/
+supabase/.temp/
+
+# Datos y logs locales
+data/
+logs/
+*.log
+*.html.gz
+
+# Sistema
+.DS_Store
+Thumbs.db
