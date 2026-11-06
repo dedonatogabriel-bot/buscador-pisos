@@ -25,3 +25,4 @@ logs/
 # Sistema
 .DS_Store
 Thumbs.db
+debug_*.html
