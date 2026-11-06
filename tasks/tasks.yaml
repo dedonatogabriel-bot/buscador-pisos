@@ -1,0 +1,795 @@
+# Fuente de las issues de GitHub. scripts/create_issues.py las crea en orden.
+# type: claude | gabi | marcos   phase: 0..4   priority: alta | media | baja
+# depends: ids que bloquean esta tarea.
+
+milestones:
+  - {phase: 0, title: "F0 Base", due: "2026-11-22"}
+  - {phase: 1, title: "F1 Captura", due: "2026-12-20"}
+  - {phase: 2, title: "F2 Inteligencia", due: "2027-01-24"}
+  - {phase: 3, title: "F3 Cobertura", due: "2027-02-21"}
+  - {phase: 4, title: "F4 Agentes y caza", due: "2027-04-30"}
+
+tasks:
+
+# ───────────────────────── F0 BASE ─────────────────────────
+
+  - id: G-01
+    type: marcos
+    phase: 0
+    area: decision
+    priority: alta
+    title: "Pasar la cláusula de rescisión y la fecha de firma del contrato actual"
+    scope: |
+      Marcos manda foto o PDF de la cláusula de rescisión anticipada y la fecha de firma.
+      Gabi la pega como comentario en este issue.
+    acceptance:
+      - "Texto textual de la cláusula y fecha de firma en un comentario"
+
+  - id: G-02
+    type: marcos
+    phase: 0
+    area: decision
+    priority: alta
+    title: "Confirmar tope, flexibilidad, barrios y calefacción"
+    scope: |
+      Responder en un comentario:
+      1. ¿El tope de $700.000 + $200.000 es fijo o sube con su sueldo?
+      2. ¿Acepta 45–49 m² o expensas > $200.000 si el costo total cierra?
+      3. Barrios aceptados y barrios vetados.
+      4. Tipos de calefacción aceptados. ¿Split frío/calor cuenta?
+      5. ¿Prefiere alguna línea de subte?
+    acceptance:
+      - "Las 5 respuestas en un comentario"
+
+  - id: G-03
+    type: gabi
+    phase: 0
+    area: infra
+    priority: alta
+    title: "Confirmar la PC de Windows como nodo del scraper"
+    scope: |
+      Confirmar que la PC es personal (no de Esgalla).
+      Confirmar que puede quedar prendida de 08:00 a 23:00 y en la franja 02:00–08:00 Madrid.
+      Instalar Claude Code en la PC con sesión del plan Pro.
+      Si la PC no sirve, comentarlo: se rediseña el nodo.
+    acceptance:
+      - "Comentario con: PC personal sí/no, horario disponible, `claude --version` funcionando"
+
+  - id: G-04
+    type: gabi
+    phase: 0
+    area: infra
+    priority: alta
+    title: "Crear el proyecto de Supabase"
+    scope: |
+      Crear proyecto `buscador-pisos` en el plan gratis, región sa-east-1 (São Paulo).
+      Cargar en GitHub Secrets: SUPABASE_URL, SUPABASE_ANON_KEY, SUPABASE_SERVICE_ROLE_KEY, SUPABASE_PROJECT_REF, SUPABASE_DB_PASSWORD, SUPABASE_ACCESS_TOKEN.
+      Guardar las mismas en el `.env` de la PC.
+    acceptance:
+      - "Secrets cargados (nombres visibles en Settings → Secrets)"
+      - "`supabase link` funciona desde la PC"
+
+  - id: G-05
+    type: gabi
+    phase: 0
+    area: bot
+    priority: alta
+    title: "Crear el bot de Telegram y el grupo con Marcos"
+    scope: |
+      Crear bot con @BotFather. Crear grupo con Marcos y el bot.
+      Cargar TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID_MARCOS y TELEGRAM_CHAT_ID_GABI en GitHub Secrets y Supabase.
+    acceptance:
+      - "Secrets cargados y bot agregado al grupo"
+
+  - id: G-06
+    type: gabi
+    phase: 1
+    area: scraping
+    priority: alta
+    depends: [C-09]
+    title: "Crear el Gmail de alertas y las búsquedas guardadas"
+    scope: |
+      Crear una cuenta de Gmail exclusiva.
+      En Zonaprop, Argenprop y MercadoLibre: crear cuenta con ese Gmail y guardar las búsquedas de `docs/busquedas.md` (generadas en C-09) con alerta inmediata.
+    acceptance:
+      - "Al menos 1 email de alerta recibido por portal"
+      - "Comentario con el Gmail usado"
+
+  - id: G-07
+    type: gabi
+    phase: 1
+    area: scraping
+    priority: media
+    title: "Crear la app de MercadoLibre"
+    scope: |
+      En developers.mercadolibre.com.ar crear una app. Redirect URI: la que indique C-12.
+      Cargar ML_CLIENT_ID y ML_CLIENT_SECRET en Supabase.
+      Autorizar la app una vez con tu usuario y pegar el `code` donde indique C-12.
+    acceptance:
+      - "Secrets cargados; C-12 obtiene un access token válido"
+
+  - id: G-08
+    type: gabi
+    phase: 4
+    area: agentes
+    priority: media
+    title: "Instalar la app de Claude en GitHub y cargar el token de suscripción"
+    scope: |
+      Correr `claude setup-token` y cargar CLAUDE_CODE_OAUTH_TOKEN en GitHub Secrets.
+      Instalar la GitHub App de Claude en el repo (`/install-github-app` o https://github.com/apps/claude).
+    acceptance:
+      - "Secret cargado y app instalada en el repo"
+
+  - id: G-09
+    type: gabi
+    phase: 0
+    area: scraping
+    priority: alta
+    title: "Subir el scraper actual (cacho-se-muda) a legacy/"
+    scope: |
+      Copiar `C:\Users\info\Downloads\claude_code\cacho-se-muda` a `legacy/cacho-se-muda/` en una rama y abrir PR.
+      Quitar antes cualquier clave o `.env`.
+    acceptance:
+      - "PR mergeado con el código en legacy/ y sin secretos"
+
+  - id: G-10
+    type: gabi
+    phase: 2
+    area: ia
+    priority: baja
+    title: "Decidir la clave de API opcional para visión (tope US$5/mes)"
+    scope: |
+      Opcional. Si sí: crear clave en la Console, fijar tope de gasto US$5/mes, cargar ANTHROPIC_API_KEY en el `.env` de la PC.
+      Si no: la visión corre solo con `claude -p`.
+    acceptance:
+      - "Comentario con la decisión"
+
+  - id: G-11
+    type: gabi
+    phase: 1
+    area: web
+    priority: media
+    title: "Crear el sitio de Firebase Hosting"
+    scope: |
+      Crear proyecto de Firebase (plan Spark) o reusar uno personal. Crear sitio `buscador-pisos`.
+      Generar cuenta de servicio para deploy y cargar FIREBASE_SERVICE_ACCOUNT y FIREBASE_PROJECT_ID en GitHub Secrets.
+      Pasar los 2 emails autorizados (Gabi y Marcos) como comentario.
+    acceptance:
+      - "Secrets cargados y emails en un comentario"
+
+  - id: C-01
+    type: claude
+    phase: 0
+    area: infra
+    priority: alta
+    title: "Esqueleto del repo"
+    scope: |
+      Estructura de carpetas de CLAUDE.md. `pyproject.toml` con uv, Python 3.12, ruff, pytest, playwright, httpx, pydantic, pyyaml.
+      `.gitignore`, `.env.example` con todos los nombres de secretos del proyecto, pre-commit con ruff y detección de secretos.
+      README corto que apunta a CLAUDE.md y docs/.
+      Workflow `ci.yml`: ruff + pytest en cada PR.
+    out: "Código de negocio."
+    acceptance:
+      - "`uv run pytest` pasa (test vacío de humo)"
+      - "`uv run ruff check .` sin errores"
+      - "CI en verde en el PR"
+    files: [pyproject.toml, .gitignore, .env.example, .pre-commit-config.yaml, .github/workflows/ci.yml, README.md]
+
+  - id: C-02
+    type: claude
+    phase: 0
+    area: datos
+    priority: alta
+    depends: [C-01, G-04]
+    title: "Esquema de base v1 en Supabase"
+    scope: |
+      Migraciones con las tablas de SPEC §6. Activar PostGIS. Índices geográficos y por (source, external_id).
+      RLS activado en todas las tablas: sin acceso anónimo. Rol de servicio para funciones y lotes.
+      Vistas de lectura para la web (`v_candidates`, `v_market`) con acceso solo a los emails autorizados.
+      Workflow de deploy de migraciones al hacer merge a main.
+    out: "Datos de capas geográficas (C-04)."
+    acceptance:
+      - "`supabase db reset` aplica todo en local sin errores"
+      - "Migraciones aplicadas en el proyecto remoto"
+      - "Advisors de seguridad de Supabase sin alertas críticas"
+    files: [supabase/migrations/, .github/workflows/db-deploy.yml]
+
+  - id: C-03
+    type: claude
+    phase: 0
+    area: datos
+    priority: alta
+    depends: [C-01]
+    title: "Configuración de búsqueda (config/busqueda.yaml)"
+    scope: |
+      Archivo con filtros duros, tope, indexación (sí/no), barrios aceptados y vetados, pesos del score, horarios de alertas.
+      Valores iniciales desde SPEC §2 y §11, marcados `# PENDIENTE G-02` donde falta confirmación.
+      Loader con pydantic y validación. Copia de la config en tabla `config` para que la usen las funciones.
+    acceptance:
+      - "Test de carga y validación pasa"
+      - "Un valor inválido produce error claro"
+    files: [config/busqueda.yaml, enrich/config.py, tests/test_config.py]
+
+  - id: C-04
+    type: claude
+    phase: 0
+    area: datos
+    priority: alta
+    depends: [C-02]
+    title: "Capas geográficas: barrios, subte, Metrobús, punto de trabajo"
+    scope: |
+      Script que baja los GeoJSON del GCBA (barrios, estaciones de subte, estaciones de Metrobús) y los carga en tablas `geo_*`.
+      Punto de trabajo: Callao y Corrientes. Polígono de la zona: norte de Av. Juan de Garay.
+      Funciones SQL: estación más cercana y su distancia, barrio por punto.
+    acceptance:
+      - "Test: un punto en Almagro devuelve barrio Almagro y su estación de subte más cercana"
+    files: [enrich/geo_load.py, supabase/migrations/]
+
+  - id: C-40
+    type: claude
+    phase: 0
+    area: decision
+    priority: alta
+    depends: [G-01]
+    title: "Analizar la cláusula de rescisión y fijar la ventana de búsqueda"
+    scope: |
+      Leer la cláusula de G-01. Determinar régimen aplicable (contrato pactado vs DNU 70/2023 art. 1221).
+      Calcular la penalidad por mes de salida (dic a abr) y el ahorro mensual necesario para que convenga.
+      Recomendar la ventana: desde diciembre o solo marzo–abril. Dejar el cálculo en `docs/ventana.md`.
+      Aclarar que no es asesoramiento legal.
+    acceptance:
+      - "`docs/ventana.md` con tabla de penalidades y recomendación"
+      - "Resumen en un comentario del issue"
+    files: [docs/ventana.md]
+
+# ───────────────────────── F1 CAPTURA ─────────────────────────
+
+  - id: C-05
+    type: claude
+    phase: 1
+    area: scraping
+    priority: alta
+    depends: [C-01, G-09]
+    title: "Scrapers de listado de Zonaprop y Argenprop"
+    scope: |
+      Portar el scraper de legacy/ a `scrapers/portales/` con interfaz común `ListingSource.fetch_list(query) -> list[ListingStub]`.
+      Stub = id externo, url, precio, moneda, expensas, m², ambientes, barrio, foto principal.
+      URLs de búsqueda generadas desde config/busqueda.yaml (tope +25%).
+      Ritmo y esperas de CLAUDE.md. Fixtures HTML reales para tests.
+    out: "Ficha completa (C-11). Envío a Supabase (C-07)."
+    acceptance:
+      - "Tests con fixtures pasan para ambos portales"
+      - "Corrida real desde la PC devuelve ≥ 20 stubs por portal (salida pegada en el PR)"
+    files: [scrapers/portales/, scrapers/fixtures/, tests/]
+
+  - id: C-06
+    type: claude
+    phase: 1
+    area: datos
+    priority: alta
+    depends: [C-02]
+    title: "Edge Function ingest"
+    scope: |
+      POST con lote de stubs o fichas, autenticado con secreto propio (INGEST_TOKEN).
+      Upsert en `listings` por (source, external_id). Registra `price_events` si cambia el precio.
+      Actualiza last_seen. Encola fichas pendientes. Idempotente.
+      Acepta modo "solo URL" (de alertas por email).
+    acceptance:
+      - "Tests Deno: alta, repetido, cambio de precio, solo URL"
+      - "Deploy en el proyecto remoto"
+    files: [supabase/functions/ingest/]
+
+  - id: C-07
+    type: claude
+    phase: 1
+    area: scraping
+    priority: alta
+    depends: [C-05, C-06, G-03]
+    title: "Runner del scraper en la PC con el Programador de tareas"
+    scope: |
+      `scrapers/runner.py`: corre las fuentes de la PC, manda a ingest, registra corrida en `sources`.
+      Archivo XML de tarea programada de Windows cada 6 h y script para instalarla.
+      Logs rotativos en disco. Modo caza: parámetro para cada 2 h.
+    acceptance:
+      - "2 corridas automáticas consecutivas registradas en `sources` (captura en el PR)"
+    files: [scrapers/runner.py, ops/windows/]
+
+  - id: C-08
+    type: claude
+    phase: 1
+    area: datos
+    priority: alta
+    depends: [C-06]
+    title: "Altas, bajas y cambios de precio"
+    scope: |
+      first_seen, last_seen y status. Un aviso ausente en 2 corridas completas de su fuente pasa a `retirado`.
+      Días publicado. Función SQL que corre al final de cada corrida.
+    acceptance:
+      - "Test SQL: aviso ausente 2 corridas queda retirado; ausente 1 sigue activo"
+    files: [supabase/migrations/]
+
+  - id: C-09
+    type: claude
+    phase: 1
+    area: scraping
+    priority: alta
+    depends: [C-03]
+    title: "Generar las búsquedas guardadas para las alertas por email"
+    scope: |
+      Desde config/busqueda.yaml generar las URLs de búsqueda por portal y barrio (tope +25%, 2 ambientes o más, alquiler).
+      Dejar en `docs/busquedas.md` con instrucciones paso a paso para G-06.
+    acceptance:
+      - "`docs/busquedas.md` con URLs que abren resultados válidos (verificadas)"
+    files: [docs/busquedas.md, scrapers/queries.py]
+
+  - id: C-10
+    type: claude
+    phase: 1
+    area: scraping
+    priority: alta
+    depends: [C-06, G-06]
+    title: "Apps Script lector de alertas de Gmail"
+    scope: |
+      Script de Apps Script con disparador cada 5 min. Lee emails no procesados de los 3 portales.
+      Extrae links de avisos y los manda a ingest en modo "solo URL". Etiqueta el email como procesado.
+      Fixtures de emails reales para tests del parser (versión testeable en TypeScript o Python).
+    acceptance:
+      - "Tests del parser con fixtures de los 3 portales"
+      - "Un email real llega a `listings` en < 10 min (captura en el PR)"
+    files: [apps-script/, tests/]
+
+  - id: C-11
+    type: claude
+    phase: 1
+    area: scraping
+    priority: alta
+    depends: [C-05, C-06]
+    title: "Scraper de ficha completa"
+    scope: |
+      Toma fichas encoladas. Baja descripción, atributos, fotos (solo URLs), coordenadas del mapa del portal, anunciante.
+      Guarda HTML gzip en Storage solo si el aviso cae en barrios objetivo.
+      Corre en el runner de la PC tras cada listado.
+    acceptance:
+      - "Tests con fixtures de ficha de ambos portales"
+      - "Fichas reales completas en `listings` (consulta pegada en el PR)"
+    files: [scrapers/ficha/, scrapers/fixtures/]
+
+  - id: C-12
+    type: claude
+    phase: 1
+    area: scraping
+    priority: media
+    depends: [C-06, G-07]
+    title: "MercadoLibre por API (ml-sync)"
+    scope: |
+      Edge Function con OAuth: guarda access y refresh token en Vault y refresca solo.
+      Consulta departamentos en alquiler de Capital Federal por barrio con filtros de config.
+      pg_cron cada 1 h. Normaliza al formato de ingest.
+    acceptance:
+      - "Corrida real trae avisos de MercadoLibre a `listings`"
+      - "Refresh automático probado (token vencido simulado)"
+    files: [supabase/functions/ml-sync/, supabase/migrations/]
+
+  - id: C-13
+    type: claude
+    phase: 1
+    area: scraping
+    priority: baja
+    depends: [C-06]
+    title: "Scraper de Properati en GitHub Actions"
+    scope: |
+      Adaptador de listado y ficha. Workflow cada 12 h que manda a ingest.
+    acceptance:
+      - "Tests con fixtures"
+      - "Corrida del workflow en verde con avisos en `listings`"
+    files: [scrapers/portales/properati.py, .github/workflows/properati.yml]
+
+  - id: C-21
+    type: claude
+    phase: 1
+    area: datos
+    priority: alta
+    depends: [C-06, C-04]
+    title: "Geolocalización con USIG y barrio"
+    scope: |
+      Normalizar dirección con el normalizador USIG del GCBA. Si falla, usar coordenadas del portal.
+      Guardar precisión: exacta, cuadra, barrio. Asignar barrio por polígono.
+      Calcular estación de subte y Metrobús más cercanas.
+    acceptance:
+      - "Tests con 10 direcciones reales (incluye una ambigua)"
+      - "≥ 90% de avisos activos con coordenadas (consulta en el PR)"
+    files: [enrich/geocode.py]
+
+  - id: C-14
+    type: claude
+    phase: 1
+    area: datos
+    priority: alta
+    depends: [C-08, C-21]
+    title: "Deduplicado v1 (sin fotos)"
+    scope: |
+      Agrupar avisos en `units`: radio 150 m + mismos ambientes + m² ±3 + similitud de texto.
+      Mantener precio mínimo y su fuente. Re-evaluar cuando cambia un aviso.
+    out: "Similitud de fotos (C-20)."
+    acceptance:
+      - "Tests con casos: mismo piso en 2 portales, 2 pisos distintos del mismo edificio"
+    files: [enrich/dedupe.py, tests/]
+
+  - id: C-15
+    type: claude
+    phase: 1
+    area: datos
+    priority: alta
+    depends: [C-14, C-03]
+    title: "Filtros duros, score por reglas y precio por comparables"
+    scope: |
+      Filtros duros de SPEC §11 con motivo de descarte. Palabras clave para balcón y calefacción en texto.
+      Precio provisorio: mediana $/m² de 15 comparables cercanos con mismos ambientes.
+      Score por reglas con los pesos de config. Guardar en `scores` con versión `reglas-v1`.
+    acceptance:
+      - "Tests de cada filtro y del cálculo de comparables"
+      - "Top 10 actual pegado en el PR para revisión de Gabi"
+    files: [enrich/score_rules.py, supabase/migrations/]
+
+  - id: C-16
+    type: claude
+    phase: 1
+    area: bot
+    priority: alta
+    depends: [C-15, G-05]
+    title: "Bot de Telegram v1: alertas y comandos"
+    scope: |
+      Edge Function `telegram` (webhook) y función `notify`.
+      Alertas rojas y resúmenes amarillos según SPEC §12, en horario de Buenos Aires.
+      Botones: Me interesa, Descartar con motivo, Ver ficha, Contactar (wa.me con plantilla).
+      Comandos: /top, /barrio, /max, /balcon, /nuevos. Solo responde a los chat IDs autorizados.
+      Descartes y "me interesa" actualizan `pipeline`.
+    acceptance:
+      - "Tests de formato de mensaje y de autorización"
+      - "Alerta real recibida en el grupo (captura en el PR)"
+    files: [supabase/functions/telegram/, supabase/functions/notify/]
+
+  - id: C-17
+    type: claude
+    phase: 1
+    area: web
+    priority: media
+    depends: [C-15, G-11]
+    title: "Web privada v1: mapa, ranking, ficha"
+    scope: |
+      HTML + JS estático. Login con link mágico de Supabase, solo emails autorizados.
+      Mapa Leaflet con pines por score y capas de subte y Metrobús. Ranking con filtros. Ficha con fotos, avisos agrupados, historial de precio.
+      Deploy a Firebase Hosting con workflow al hacer merge.
+    acceptance:
+      - "Un email no autorizado no ve datos (probado)"
+      - "Deploy en verde y capturas de las 3 vistas en el PR"
+    files: [web/, .github/workflows/web-deploy.yml]
+
+  - id: C-18
+    type: claude
+    phase: 1
+    area: infra
+    priority: alta
+    depends: [C-16]
+    title: "Chequeo de salud cada 6 h"
+    scope: |
+      Workflow de GitHub Actions: por fuente, avisos nuevos y última corrida exitosa en 24 h.
+      Si una fuente trae 0 o falla 2 veces: alerta a Gabi por Telegram y crea issue con etiqueta `fuente-rota`.
+      La llamada mantiene activo el proyecto de Supabase.
+    acceptance:
+      - "Fuente apagada a propósito genera alerta e issue (captura en el PR)"
+    files: [.github/workflows/health.yml, ops/health.py]
+
+# ───────────────────────── F2 INTELIGENCIA ─────────────────────────
+
+  - id: C-19
+    type: claude
+    phase: 2
+    area: ia
+    priority: alta
+    depends: [C-11, C-15, G-03]
+    title: "Extracción con IA por lotes (claude -p)"
+    scope: |
+      `enrich/ai_batch.py`: toma avisos pendientes, arma lotes de 25, llama `claude -p` con modelo Haiku y salida JSON según esquema de SPEC §7.
+      Valida con pydantic, reintenta inválidos una vez, guarda campos de IA y versión.
+      Tarea programada en la PC a las 03:00 y 06:00 Madrid. Respeta un máximo de lotes por corrida (config).
+      Recalcula filtros y score de los avisos actualizados.
+    acceptance:
+      - "Test con respuesta simulada de claude"
+      - "Muestra de 20 avisos: precisión por campo ≥ 90% contra revisión manual (tabla en el PR)"
+    files: [enrich/ai_batch.py, enrich/schema.py, ops/windows/]
+
+  - id: C-20
+    type: claude
+    phase: 2
+    area: ia
+    priority: media
+    depends: [C-19]
+    title: "Visión y hash de fotos"
+    scope: |
+      pHash de todas las fotos de avisos en barrios objetivo. Usarlo en el deduplicado.
+      Bandera de estafa: misma foto en direcciones distintas.
+      Visión en el lote de IA para pisos que pasan filtros: balcón, estado, luz, humedad, calidad de fotos.
+      Si existe ANTHROPIC_API_KEY (G-10), usarla solo para los 10 mejores del día.
+    acceptance:
+      - "Test de pHash con fotos duplicadas y distintas"
+      - "5 pisos con visión revisados a mano en el PR"
+    files: [enrich/photos.py, enrich/ai_batch.py]
+
+  - id: C-22
+    type: claude
+    phase: 2
+    area: datos
+    priority: alta
+    depends: [C-04]
+    title: "Isocrona de 40 minutos a Callao y Corrientes"
+    scope: |
+      Calcular una vez con OpenTripPlanner y GTFS de subte, colectivos y Metrobús (correr en local).
+      Si no hay GTFS vigente: aproximación por caminata a estación + tiempo de viaje por línea.
+      Guardar polígono en `geo_isochrone`. Usar en filtros duros.
+    acceptance:
+      - "Polígono cargado; mapa del polígono en el PR"
+      - "5 direcciones de control con tiempos razonables"
+    files: [enrich/isochrone.py, docs/isocrona.md]
+
+  - id: C-23
+    type: claude
+    phase: 2
+    area: datos
+    priority: baja
+    depends: [C-04]
+    title: "Capas de entorno (delitos, ruido, comercio)"
+    scope: |
+      Verificar qué datasets del GCBA están vigentes. Cargar los disponibles. Calcular componente N del score.
+      Si no hay datos fiables, dejar N neutro y documentarlo.
+    acceptance:
+      - "`docs/entorno.md` con fuentes usadas o descartadas y por qué"
+    files: [enrich/environment.py, docs/entorno.md]
+
+  - id: C-24
+    type: claude
+    phase: 2
+    area: ia
+    priority: alta
+    depends: [C-19, C-21]
+    title: "Modelo de precios nocturno (LightGBM por cuantiles)"
+    scope: |
+      Entrenar con todos los avisos capturados. Variables de SPEC §10. Cuantiles p10, p50, p90.
+      Validación por tiempo (entrenar con semanas viejas, validar con la última).
+      Correr cada noche en la PC o en Actions. Guardar predicciones en `scores` y métricas en `docs/modelo.md`.
+      Calibrar contra el Index de Zonaprop mensual.
+    acceptance:
+      - "Error absoluto medio reportado. Control modelo: ≤ 10% (si no, comentar causa y plan)"
+    files: [enrich/price_model.py, docs/modelo.md]
+
+  - id: C-25
+    type: claude
+    phase: 2
+    area: ia
+    priority: alta
+    depends: [C-24, C-20]
+    title: "Detector de chollos y antifraude"
+    scope: |
+      Los 8 tipos de chollo y las reglas antifraude de SPEC §10. Etiquetas en `scores`.
+      Alerta roja inmediata para subvaluado, baja de precio, arbitraje y dueño directo reciente.
+    acceptance:
+      - "Tests por tipo de chollo y por regla antifraude"
+    files: [enrich/deals.py]
+
+  - id: C-26
+    type: claude
+    phase: 2
+    area: ia
+    priority: alta
+    depends: [C-25, C-22]
+    title: "Score final ponderado y ajuste de pesos por descartes"
+    scope: |
+      Score de SPEC §11 con componentes guardados. Reemplaza al score por reglas.
+      Ajuste de pesos con los motivos de descarte de `pipeline` (propuesta semanal, Gabi aprueba en PR).
+    acceptance:
+      - "Tests de cada componente"
+      - "Comparación top 10 reglas vs top 10 final en el PR"
+    files: [enrich/score.py]
+
+  - id: C-27
+    type: claude
+    phase: 2
+    area: ia
+    priority: media
+    depends: [C-24]
+    title: "Proyecciones de mercado"
+    scope: |
+      Curva de supervivencia por barrio y rango de precio. Oferta semanal que pasa filtros. Tendencia de mediana por barrio.
+      Margen de negociación sugerido por días publicado e historial de bajas. Tabla `market_stats`.
+      Reporte semanal de mercado los lunes 09:00 BA por Telegram.
+    acceptance:
+      - "Reporte semanal real enviado (captura en el PR)"
+    files: [enrich/market.py]
+
+  - id: C-28
+    type: claude
+    phase: 2
+    area: datos
+    priority: media
+    depends: [C-03, C-40]
+    title: "Simulador de contrato y calculadora de salida anticipada"
+    scope: |
+      Costo a 24 meses según ajuste (IPC trimestral, semestral, ICL, USD) con 3 escenarios de inflación.
+      Calculadora: conviene mudarse antes según SPEC §13, con la cláusula de C-40.
+      Módulo compartido entre web y bot.
+    acceptance:
+      - "Tests con casos calculados a mano"
+    files: [web/lib/simulator.js, tests/]
+
+# ───────────────────────── F3 COBERTURA ─────────────────────────
+
+  - id: C-29
+    type: claude
+    phase: 3
+    area: scraping
+    priority: alta
+    depends: [C-06]
+    title: "Skill nuevo-adaptador y adaptador Tokko genérico"
+    scope: |
+      Skill `.claude/skills/nuevo-adaptador`: recibe URL de inmobiliaria, detecta plataforma, genera adaptador, fixture y test, registra en `agencies`.
+      Adaptador genérico para sitios Tokko Broker. Workflow cada 12 h para adaptadores de inmobiliarias.
+    acceptance:
+      - "Adaptador Tokko probado con 3 inmobiliarias reales de barrios objetivo"
+      - "La skill genera un adaptador nuevo de punta a punta en una sesión"
+    files: [.claude/skills/nuevo-adaptador/, scrapers/inmobiliarias/tokko.py, .github/workflows/agencies.yml]
+
+  - id: C-30
+    type: claude
+    phase: 3
+    area: scraping
+    priority: alta
+    depends: [C-29]
+    title: "Descubrir inmobiliarias de los barrios objetivo"
+    scope: |
+      Por barrio aceptado, buscar inmobiliarias (búsqueda web). Guardar nombre, web, Instagram, plataforma detectada.
+      Crear adaptadores con la skill para las que usan plataformas soportadas.
+    acceptance:
+      - "≥ 30 inmobiliarias en `agencies` con plataforma detectada"
+      - "Lista de las que no tienen adaptador y por qué"
+    files: [enrich/agencies_discovery.py, docs/inmobiliarias.md]
+
+  - id: C-31
+    type: claude
+    phase: 3
+    area: scraping
+    priority: media
+    depends: [C-29]
+    title: "Adaptadores de franquicias (RE/MAX, Century 21, Toribio Achával)"
+    scope: |
+      Evaluar cada sitio: API interna, HTML, bloqueo. Implementar los factibles.
+      Documentar los descartados.
+    acceptance:
+      - "Tests con fixtures de los implementados"
+      - "Tabla de factibilidad en el PR"
+    files: [scrapers/inmobiliarias/]
+
+  - id: C-32
+    type: claude
+    phase: 3
+    area: bot
+    priority: media
+    depends: [C-16, C-19]
+    title: "Inbox manual en el bot: links, capturas y carteles"
+    scope: |
+      El bot recibe links (los manda a ingest), capturas y fotos de carteles.
+      Fotos: guardar en Storage, leer GPS del EXIF, encolar para OCR en el lote de IA (teléfono, texto del cartel).
+      Facebook e Instagram: solo carga manual de links o capturas. Nunca automatizar esas cuentas.
+    acceptance:
+      - "Link, captura y foto de cartel de prueba terminan en `listings` (capturas en el PR)"
+    files: [supabase/functions/telegram/, enrich/ai_batch.py]
+
+  - id: C-33
+    type: claude
+    phase: 3
+    area: bot
+    priority: media
+    depends: [C-32]
+    title: "Parseo de respuestas de anunciantes"
+    scope: |
+      Marcos reenvía al bot la respuesta del anunciante con el ID del piso.
+      El lote de IA extrae expensas, ajuste, disponibilidad, garantías y visita propuesta. Actualiza la ficha y el score.
+    acceptance:
+      - "3 respuestas reales o simuladas procesadas correctamente"
+    files: [supabase/functions/telegram/, enrich/ai_batch.py]
+
+  - id: C-34
+    type: claude
+    phase: 3
+    area: web
+    priority: media
+    depends: [C-17, C-27, C-28]
+    title: "Web v2: pipeline, mercado, calculadora y configuración"
+    scope: |
+      Pipeline kanban con motivos de descarte. Vista de mercado con medianas, tendencia y tope marcado.
+      Calculadora y simulador de C-28. Configuración editable de pesos y filtros (guarda en tabla `config`).
+      Checklist de visita en el celular.
+    acceptance:
+      - "Capturas de las 4 vistas en el PR"
+      - "Cambio de pesos desde la web altera el ranking"
+    files: [web/]
+
+# ───────────────────────── F4 AGENTES Y CAZA ─────────────────────────
+
+  - id: C-35
+    type: claude
+    phase: 4
+    area: agentes
+    priority: alta
+    depends: [C-29, C-26]
+    title: "Skills arreglar-scraper, ficha-piso, revisar-contrato e informe-mercado"
+    scope: |
+      Cuatro skills en `.claude/skills/` con instrucciones, scripts y evals (con skill-creator).
+      arreglar-scraper: baja HTML nuevo, compara con fixture, corrige selectores, actualiza fixture y test.
+      ficha-piso: dossier con pros, banderas, preguntas y contraoferta.
+      revisar-contrato: cláusulas de rescisión, ajuste, expensas y garantía contra SPEC §13. Aclara que no es asesoramiento legal.
+      informe-mercado: resumen semanal.
+    acceptance:
+      - "Evals de cada skill en verde"
+    files: [.claude/skills/]
+
+  - id: C-36
+    type: claude
+    phase: 4
+    area: agentes
+    priority: alta
+    depends: [C-18, C-35, G-08]
+    title: "Médico de scrapers con claude-code-action"
+    scope: |
+      Workflow que se dispara con issues `fuente-rota` del chequeo de salud.
+      Corre claude-code-action con CLAUDE_CODE_OAUTH_TOKEN y la skill arreglar-scraper. Abre PR con fix y test.
+      Zonaprop y Argenprop: el HTML nuevo lo sube la PC al issue (Actions no puede scrapearlos).
+    acceptance:
+      - "Simulacro: selector roto a propósito → PR de arreglo automático"
+    files: [.github/workflows/scraper-doctor.yml]
+
+  - id: C-37
+    type: claude
+    phase: 4
+    area: agentes
+    priority: media
+    depends: [C-35, C-26]
+    title: "Analista nocturno"
+    scope: |
+      Tarea programada a las 04:00 Madrid (en la PC con `claude -p` o tarea programada en la nube).
+      Fichas de los 10 mejores pisos nuevos con la skill ficha-piso. Revisión de calidad de datos de una muestra.
+      Explorador semanal de inmobiliarias los domingos en la misma tarea.
+      Resumen para Marcos a las 08:00 BA.
+    acceptance:
+      - "3 noches seguidas con resumen entregado (capturas)"
+    files: [ops/, .claude/]
+
+  - id: C-38
+    type: claude
+    phase: 4
+    area: agentes
+    priority: baja
+    depends: [C-35]
+    title: "Subagentes, hooks y plugin"
+    scope: |
+      Subagentes: scraper-dev, data-qa, security-review, frontend.
+      Hooks: test del adaptador al editarlo, bloqueo de secretos, aviso por Telegram al terminar tareas largas.
+      Empaquetar skills, agentes y hooks como plugin `buscador-pisos`.
+    acceptance:
+      - "Hook de secretos bloquea un `.env` de prueba"
+      - "Plugin instalable en otra carpeta"
+    files: [.claude/agents/, .claude/settings.json, plugin/]
+
+  - id: C-39
+    type: claude
+    phase: 4
+    area: ops
+    priority: alta
+    depends: [C-26, C-34, C-07]
+    title: "Modo caza (marzo–abril)"
+    scope: |
+      Activar scrapers cada 2 h. Ajustar umbrales de alerta con el historial.
+      Kit de cierre: checklist de documentos de Marcos. Control oferta: reporte de pisos por semana que pasan filtros.
+      Si son < 3 por semana, abrir issue `tipo:marcos` para ajustar tope, barrios o m².
+    acceptance:
+      - "Control oferta reportado en un comentario"
+    files: [config/busqueda.yaml, ops/]
