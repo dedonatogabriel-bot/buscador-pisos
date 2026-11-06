@@ -1,0 +1,61 @@
+# Configuración de búsqueda. Valores de docs/SPEC.md §2, §11 y §12.
+# Lo marcado "PENDIENTE G-02" espera la confirmación de Marcos (docs/DECISIONES.md).
+# No inventes valores acá: si falta uno, dejá la lista vacía o el campo en null.
+
+hard_filters:
+  contract_type: traditional        # alquiler tradicional, no temporario
+  furnished: false
+  min_bedrooms: 1
+  min_area_m2: 50                   # PENDIENTE G-02: ¿acepta 45-49 m² si el total cierra?
+  require_balcony: true
+  require_heating: true
+  accepted_heating_types: []        # PENDIENTE G-02: ¿split frío/calor cuenta?
+  min_floor: 5
+  require_elevator: true
+  require_inside_isochrone: true    # isocrona de 40 min a Callao y Corrientes (C-22)
+  advertiser: [owner, agency]
+  guarantee: propietaria_caba
+
+budget:
+  currency: ARS
+  max_rent: 700000
+  max_expenses: 200000              # PENDIENTE G-02: ¿acepta más si el total cierra?
+  max_total: 900000                 # alquiler + expensas por mes
+  total_tolerance_pct: 10           # costo total <= tope indexado + 10%
+
+indexation:
+  enabled: null                     # PENDIENTE G-02: ¿tope fijo o indexado con su sueldo?
+  index: IPC
+  frequency: monthly
+
+neighborhoods:
+  accepted: []                      # PENDIENTE G-02
+  vetoed: []                        # PENDIENTE G-02
+
+geography:
+  zone: norte de Av. Juan de Garay
+  work_point:
+    name: Callao y Corrientes
+  max_commute_minutes: 40
+  preferred_subway_lines: [B, D, A]
+
+# Score = 35·P + 20·T + 15·E + 15·C + 10·U + 5·N (0-100). Deben sumar 100.
+score_weights:
+  price: 35
+  transport: 20
+  space: 15
+  comfort: 15
+  urgency: 10
+  environment: 5
+
+alerts:
+  timezone: America/Argentina/Buenos_Aires
+  red_window: {start: "08:00", end: "23:00"}
+  red_min_score: 80
+  yellow_min_score: 60
+  yellow_max_score: 79
+  yellow_digest_times: ["09:00", "19:00"]
+  weekly_market_report: {weekday: monday, time: "09:00"}
+  new_owner_listing_max_hours: 24
+
+target_move_in: 2027-05-01

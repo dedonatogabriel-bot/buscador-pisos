@@ -10,6 +10,7 @@ dependencies = [
     "pydantic>=2.7",
     "pyyaml>=6.0",
     "python-dotenv>=1.0",
+    "tzdata>=2026.6",
 ]
 
 [dependency-groups]
