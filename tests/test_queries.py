@@ -43,5 +43,14 @@ def test_slugs_are_ascii_without_double_dashes(cfg) -> None:
         assert s.url.isascii()
 
 
+def test_one_alert_per_portal(cfg) -> None:
+    urls = queries.one_alert_urls(cfg)
+    assert set(urls) == {"zonaprop", "argenprop", "mercadolibre"}
+    assert all("875000" in u and u.isascii() for u in urls.values())
+    # Zonaprop lleva todos los barrios aceptados
+    for hood in cfg.neighborhoods.accepted:
+        assert queries.slugify(hood) in urls["zonaprop"]
+
+
 def test_committed_doc_is_up_to_date(cfg) -> None:
     assert DOC.read_text(encoding="utf-8").strip() == queries.render_markdown(cfg).strip()

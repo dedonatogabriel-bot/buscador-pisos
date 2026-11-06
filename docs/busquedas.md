@@ -3,27 +3,45 @@
 > Archivo generado por `uv run python -m scrapers.queries`. No editar a mano: cambiá `config/busqueda.yaml` y volvé a generarlo.
 
 Tope de alquiler: **$875.000** ($700.000 de la config + 25%).
-Barrios: 38. Portales: 3. Total de URLs: 114.
+Ambientes: **2 o más**. Alquiler tradicional.
 
-## Paso a paso (G-06)
+## Qué hacer: una alerta por portal
+
+No hace falta una alerta por barrio. Con **una alerta inmediata por portal** alcanza.
 
 1. Creá el Gmail exclusivo de alertas. No lo uses para nada más.
 2. Registrate con ese Gmail en Zonaprop, Argenprop y MercadoLibre.
-3. Abrí la primera URL de un portal. Confirmá que muestra resultados de ese barrio y que el precio máximo es el tope de arriba.
-4. Aplicá en la pantalla el filtro de **2 ambientes o más** (no va en la URL).
-5. Tocá "Crear alerta" / "Guardar búsqueda" y elegí frecuencia **inmediata**, al email de alertas.
-6. Repetí con los demás barrios. Si el portal deja elegir varios barrios en una sola alerta, agrupalos y ahorrás pasos: lo que importa es cubrir todos los de la lista.
-7. Esperá al menos 1 email de alerta por portal y comentalo en el issue #6.
+3. En cada portal abrí la URL de la tabla de abajo.
+4. Si no muestra resultados, tocá **Departamentos** + **Alquiler** + **Capital Federal** a mano y anotá en el issue #6 qué URL falló.
+5. En los filtros marcá **todos los barrios de la lista** (o dejá CABA entera), precio máximo **$875.000** y **2 ambientes o más**.
+6. Tocá "Crear alerta" / "Guardar búsqueda", frecuencia **inmediata**, al Gmail de alertas.
+7. Esperá al menos 1 email por portal y comentalo en el issue #6.
 
-Si una URL no abre resultados válidos, anotá cuál en el issue #6 en vez de corregirla a mano.
+| Portal | URL de partida | Qué cubre |
+| --- | --- | --- |
+| Zonaprop | https://www.zonaprop.com.ar/departamentos-alquiler-agronomia-almagro-balvanera-barracas-belgrano-boedo-caballito-chacarita-coghlan-colegiales-la-paternal-liniers-monte-castro-monserrat-nunez-palermo-parque-chacabuco-parque-chas-parque-patricios-puerto-madero-recoleta-retiro-saavedra-san-cristobal-san-nicolas-san-telmo-velez-sarsfield-versalles-villa-crespo-villa-del-parque-villa-devoto-villa-general-mitre-villa-luro-villa-ortuzar-villa-pueyrredon-villa-real-villa-santa-rita-villa-urquiza-menos-875000-pesos.html | Todos los barrios de la lista |
+| Argenprop | https://www.argenprop.com/departamentos/alquiler/capital-federal/hasta-875000-pesos | CABA entera (marcá los barrios en el filtro si podés) |
+| MercadoLibre | https://inmuebles.mercadolibre.com.ar/departamentos/alquiler/capital-federal/_PriceRange_0-875000_NoIndex_True | CABA entera (marcá los barrios en el filtro si podés) |
 
-## Estado de verificación de los formatos
+Si el portal te manda avisos de barrios que no están en la lista, no pasa nada: el sistema los descarta al procesar el email.
 
-- **argenprop**: verificada el 2026-11-06 (la URL de Palermo devolvió 759 avisos)
-- **zonaprop**: formato del scraper viejo (sep-2026); pendiente de abrir en G-06
-- **mercadolibre**: formato del scraper viejo (verificado el 14/09/2026); pendiente de abrir en G-06
+### Barrios a marcar
 
-## Argenprop
+Agronomía, Almagro, Balvanera, Barracas, Belgrano, Boedo, Caballito, Chacarita, Coghlan, Colegiales, La Paternal, Liniers, Monte Castro, Monserrat, Núñez, Palermo, Parque Chacabuco, Parque Chas, Parque Patricios, Puerto Madero, Recoleta, Retiro, Saavedra, San Cristóbal, San Nicolás, San Telmo, Vélez Sársfield, Versalles, Villa Crespo, Villa del Parque, Villa Devoto, Villa General Mitre, Villa Luro, Villa Ortúzar, Villa Pueyrredón, Villa Real, Villa Santa Rita, Villa Urquiza.
+
+## Estado de verificación
+
+Las URLs de arriba **no están verificadas**: se derivaron de los formatos de abajo.
+
+- **argenprop** (formato por barrio): verificada el 2026-11-06 (la URL de Palermo devolvió 759 avisos)
+- **zonaprop** (formato por barrio): formato del scraper viejo (sep-2026); pendiente de abrir en G-06
+- **mercadolibre** (formato por barrio): formato del scraper viejo (verificado el 14/09/2026); pendiente de abrir en G-06
+
+## Plan B: una alerta por barrio
+
+Solo si un portal no te deja elegir varios barrios ni CABA entera. Son 114 URLs en total (38 por portal). Mismos pasos 5 a 7, repetidos.
+
+### Argenprop
 
 | Barrio | URL |
 | --- | --- |
@@ -66,7 +84,7 @@ Si una URL no abre resultados válidos, anotá cuál en el issue #6 en vez de co
 | Villa Santa Rita | https://www.argenprop.com/departamentos/alquiler/villa-santa-rita/hasta-875000-pesos |
 | Villa Urquiza | https://www.argenprop.com/departamentos/alquiler/villa-urquiza/hasta-875000-pesos |
 
-## Zonaprop
+### Zonaprop
 
 | Barrio | URL |
 | --- | --- |
@@ -109,7 +127,7 @@ Si una URL no abre resultados válidos, anotá cuál en el issue #6 en vez de co
 | Villa Santa Rita | https://www.zonaprop.com.ar/departamentos-alquiler-villa-santa-rita-menos-875000-pesos.html |
 | Villa Urquiza | https://www.zonaprop.com.ar/departamentos-alquiler-villa-urquiza-menos-875000-pesos.html |
 
-## Mercadolibre
+### Mercadolibre
 
 | Barrio | URL |
 | --- | --- |

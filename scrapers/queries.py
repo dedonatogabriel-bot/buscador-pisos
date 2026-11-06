@@ -24,6 +24,12 @@ ARGENPROP = "https://www.argenprop.com/departamentos/alquiler/{slug}/hasta-{cap}
 ZONAPROP = "https://www.zonaprop.com.ar/departamentos-alquiler-{slug}-menos-{cap}-pesos.html"
 MERCADOLIBRE = "https://inmuebles.mercadolibre.com.ar/departamentos/alquiler/capital-federal/{slug}/_PriceRange_0-{cap}_NoIndex_True"
 
+# Una alerta por portal (camino recomendado). Ninguna de estas tres está verificada: se derivan de los
+# formatos de arriba cambiando el barrio por "todos" o por la CABA entera.
+ARGENPROP_CABA = "https://www.argenprop.com/departamentos/alquiler/capital-federal/hasta-{cap}-pesos"
+ZONAPROP_MULTI = "https://www.zonaprop.com.ar/departamentos-alquiler-{slugs}-menos-{cap}-pesos.html"
+MERCADOLIBRE_CABA = "https://inmuebles.mercadolibre.com.ar/departamentos/alquiler/capital-federal/_PriceRange_0-{cap}_NoIndex_True"
+
 # Estado de verificación de cada formato de URL. Cambiarlo solo con evidencia.
 VERIFIED = {
     "argenprop": "verificada el 2026-11-06 (la URL de Palermo devolvió 759 avisos)",
@@ -70,9 +76,22 @@ def build_searches(cfg: SearchConfig) -> list[PortalSearch]:
     ]
 
 
+def one_alert_urls(cfg: SearchConfig) -> dict[str, str]:
+    """Una URL por portal: Zonaprop con todos los barrios, los otros dos con CABA entera."""
+    cap = rent_cap(cfg)
+    slugs = "-".join(slugify(h) for h in cfg.neighborhoods.accepted)
+    return {
+        "zonaprop": ZONAPROP_MULTI.format(slugs=slugs, cap=cap),
+        "argenprop": ARGENPROP_CABA.format(cap=cap),
+        "mercadolibre": MERCADOLIBRE_CABA.format(cap=cap),
+    }
+
+
 def render_markdown(cfg: SearchConfig) -> str:
     cap = rent_cap(cfg)
     searches = build_searches(cfg)
+    hoods = cfg.neighborhoods.accepted
+    one = one_alert_urls(cfg)
     lines = [
         "# Búsquedas guardadas para las alertas por email",
         "",
@@ -81,30 +100,49 @@ def render_markdown(cfg: SearchConfig) -> str:
         "",
         f"Tope de alquiler: **{_ars(cap)}** "
         f"({_ars(cfg.budget.max_rent)} de la config + {RENT_CAP_MARGIN_PCT}%).",
-        f"Barrios: {len(cfg.neighborhoods.accepted)}. Portales: {len(_TEMPLATES)}. "
-        f"Total de URLs: {len(searches)}.",
+        f"Ambientes: **{MIN_ROOMS} o más**. Alquiler tradicional.",
         "",
-        "## Paso a paso (G-06)",
+        "## Qué hacer: una alerta por portal",
+        "",
+        "No hace falta una alerta por barrio. Con **una alerta inmediata por portal** alcanza.",
         "",
         "1. Creá el Gmail exclusivo de alertas. No lo uses para nada más.",
         "2. Registrate con ese Gmail en Zonaprop, Argenprop y MercadoLibre.",
-        "3. Abrí la primera URL de un portal. Confirmá que muestra resultados de ese barrio y que "
-        "el precio máximo es el tope de arriba.",
-        f"4. Aplicá en la pantalla el filtro de **{MIN_ROOMS} ambientes o más** (no va en la URL).",
-        '5. Tocá "Crear alerta" / "Guardar búsqueda" y elegí frecuencia **inmediata**, al email de alertas.',
-        "6. Repetí con los demás barrios. Si el portal deja elegir varios barrios en una sola alerta, "
-        "agrupalos y ahorrás pasos: lo que importa es cubrir todos los de la lista.",
-        "7. Esperá al menos 1 email de alerta por portal y comentalo en el issue #6.",
+        "3. En cada portal abrí la URL de la tabla de abajo.",
+        "4. Si no muestra resultados, tocá **Departamentos** + **Alquiler** + **Capital Federal** a mano "
+        "y anotá en el issue #6 qué URL falló.",
+        f"5. En los filtros marcá **todos los barrios de la lista** (o dejá CABA entera), precio máximo "
+        f"**{_ars(cap)}** y **{MIN_ROOMS} ambientes o más**.",
+        '6. Tocá "Crear alerta" / "Guardar búsqueda", frecuencia **inmediata**, al Gmail de alertas.',
+        "7. Esperá al menos 1 email por portal y comentalo en el issue #6.",
         "",
-        "Si una URL no abre resultados válidos, anotá cuál en el issue #6 en vez de corregirla a mano.",
+        "| Portal | URL de partida | Qué cubre |",
+        "| --- | --- | --- |",
+        f"| Zonaprop | {one['zonaprop']} | Todos los barrios de la lista |",
+        f"| Argenprop | {one['argenprop']} | CABA entera (marcá los barrios en el filtro si podés) |",
+        f"| MercadoLibre | {one['mercadolibre']} | CABA entera (marcá los barrios en el filtro si podés) |",
         "",
-        "## Estado de verificación de los formatos",
+        "Si el portal te manda avisos de barrios que no están en la lista, no pasa nada: el sistema "
+        "los descarta al procesar el email.",
         "",
-        *[f"- **{p}**: {v}" for p, v in VERIFIED.items()],
+        "### Barrios a marcar",
+        "",
+        ", ".join(hoods) + ".",
+        "",
+        "## Estado de verificación",
+        "",
+        "Las URLs de arriba **no están verificadas**: se derivaron de los formatos de abajo.",
+        "",
+        *[f"- **{p}** (formato por barrio): {v}" for p, v in VERIFIED.items()],
+        "",
+        "## Plan B: una alerta por barrio",
+        "",
+        "Solo si un portal no te deja elegir varios barrios ni CABA entera. "
+        f"Son {len(searches)} URLs en total ({len(hoods)} por portal). Mismos pasos 5 a 7, repetidos.",
         "",
     ]
     for portal in _TEMPLATES:
-        lines += [f"## {portal.capitalize()}", "", "| Barrio | URL |", "| --- | --- |"]
+        lines += [f"### {portal.capitalize()}", "", "| Barrio | URL |", "| --- | --- |"]
         lines += [f"| {s.neighborhood} | {s.url} |" for s in searches if s.portal == portal]
         lines.append("")
     return "\n".join(lines)
