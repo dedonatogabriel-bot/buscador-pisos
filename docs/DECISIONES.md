@@ -14,7 +14,7 @@
 | 2026-11-06 | Construcción con Claude Code en local, no en Actions | Ahorra minutos de GitHub |
 | 2026-11-06 | Tope de $900.000 indexado por IPC mensual | Marcos (G-02) |
 | 2026-11-06 | Mínimo 45 m² (el SPEC decía 50) y expensas sin tope propio si el total cierra | Marcos (G-02) |
-| 2026-11-06 | 40 barrios aceptados, ninguno vetado; cualquier calefacción vale | Marcos (G-02) |
+| 2026-11-06 | 38 barrios aceptados, ninguno vetado; cualquier calefacción vale | Marcos (G-02) |
 | 2026-11-06 | La PC de Windows es personal; disponible 08:00-23:00 y 02:00-08:00 Madrid, con cortes de ~20 min | Gabi (G-03) |
 | 2026-11-06 | Sin clave de API de pago: la visión corre solo con `claude -p` | Gabi (G-10) |
 

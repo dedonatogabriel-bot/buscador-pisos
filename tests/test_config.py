@@ -29,8 +29,9 @@ def test_default_config_loads() -> None:
     assert cfg.indexation.index == "IPC"
     assert cfg.budget.max_expenses is None
     assert cfg.hard_filters.accepted_heating_types == ["any"]
-    assert len(cfg.neighborhoods.accepted) == 40
-    assert {"Almagro", "Constitución", "La Boca"} <= set(cfg.neighborhoods.accepted)
+    assert len(cfg.neighborhoods.accepted) == 38
+    assert {"Almagro", "Barracas"} <= set(cfg.neighborhoods.accepted)
+    assert not {"Constitución", "La Boca"} & set(cfg.neighborhoods.accepted)
     assert cfg.neighborhoods.vetoed == []
 
 

@@ -29,7 +29,7 @@ indexation:
   frequency: monthly
 
 neighborhoods:
-  # G-02. Ojo: Barracas, La Boca y Parque Patricios (parte) caen al sur de Av. Juan de Garay.
+  # G-02. Ojo: Barracas y Parque Patricios (parte) caen al sur de Av. Juan de Garay.
   # Confirmar con Marcos si pesa más la zona o la lista (el filtro de zona de C-04 los dejaría afuera).
   accepted:
     - Agronomía
@@ -42,8 +42,6 @@ neighborhoods:
     - Chacarita
     - Coghlan
     - Colegiales
-    - Constitución
-    - La Boca
     - La Paternal
     - Liniers
     - Monte Castro
