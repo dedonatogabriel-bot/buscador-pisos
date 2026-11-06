@@ -1,9 +1,4 @@
-"""Listado de Zonaprop.
-
-PENDIENTE DE FIXTURE REAL: Zonaprop mostró el desafío de Cloudflare al bajar la página de prueba,
-así que los selectores vienen del scraper viejo (legacy/, sep-2026) y no están verificados contra HTML
-actual. Cuando exista `scrapers/fixtures/zonaprop_listado.html`, se activa el test que los valida.
-"""
+"""Listado de Zonaprop. Parser sobre HTML estático (fixture real del 2026-11-06) y fuente con Playwright."""
 
 from __future__ import annotations
 

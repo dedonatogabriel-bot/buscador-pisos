@@ -147,8 +147,17 @@ def test_zonaprop_source_raises_on_cloudflare(query: SearchQuery) -> None:
         source.fetch_list(query)
 
 
-@pytest.mark.skipif(not ZONAPROP_FIXTURE.exists(), reason="falta fixture real de Zonaprop (pendiente Gabi)")
 def test_zonaprop_parses_fixture() -> None:
     stubs = zonaprop.parse_listing_html(ZONAPROP_FIXTURE.read_text(encoding="utf-8"))
-    assert len(stubs) >= 15
-    assert all(s.portal == "zonaprop" and s.price and s.url.startswith("https://") for s in stubs)
+    assert len(stubs) == 30
+    assert len({s.external_id for s in stubs}) == 30
+    assert all(s.portal == "zonaprop" and s.url.startswith("https://www.zonaprop.com.ar/") for s in stubs)
+    assert all(s.price and s.area_m2 and s.rooms and s.main_photo and s.neighborhood for s in stubs)
+    first = stubs[0]
+    assert (first.external_id, first.price, first.currency, first.expenses) == (
+        "60305711",
+        790_000,
+        "ARS",
+        85_000,
+    )
+    assert (first.area_m2, first.rooms, first.neighborhood) == (34.0, 2, "Las Cañitas")
