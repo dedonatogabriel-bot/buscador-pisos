@@ -8,11 +8,6 @@ from contextlib import contextmanager, suppress
 
 from scrapers.portales.base import polite_sleep
 
-_USER_AGENT = (
-    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
-    "(KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
-)
-
 
 class BlockedError(RuntimeError):
     """El portal devolvió una pantalla anti-bot en vez del listado. No se reintenta."""
@@ -36,7 +31,6 @@ def page_fetcher(headless: bool = False) -> Iterator[Callable[[str], str]]:
             ctx = browser.new_context(
                 locale="es-AR",
                 timezone_id="America/Argentina/Buenos_Aires",
-                user_agent=_USER_AGENT,
                 viewport={"width": 1440, "height": 900},
             )
             try:

@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from collections.abc import Callable
+from pathlib import Path
 
 from bs4 import BeautifulSoup, Tag
 
@@ -104,6 +105,7 @@ class ArgenpropSource:
                 stubs = parse_listing_html(html)
                 if not stubs:
                     if "listing__items" not in html:
+                        Path("debug_argenprop.html").write_text(html, encoding="utf-8")
                         raise BlockedError(f"argenprop: sin listado en {url}, posible bloqueo")
                     log(f"argenprop: {hood} sin más avisos en {url}")
                     break
